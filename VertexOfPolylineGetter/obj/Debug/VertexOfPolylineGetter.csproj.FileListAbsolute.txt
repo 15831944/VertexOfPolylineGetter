@@ -1,0 +1,5 @@
+C:\Users\SMI\Desktop\VertexOfPolylineGetter\VertexOfPolylineGetter\bin\Debug\VertexOfPolylineGetter.dll
+C:\Users\SMI\Desktop\VertexOfPolylineGetter\VertexOfPolylineGetter\bin\Debug\VertexOfPolylineGetter.pdb
+C:\Users\SMI\Desktop\VertexOfPolylineGetter\VertexOfPolylineGetter\obj\Debug\VertexOfPolylineGetter.csprojResolveAssemblyReference.cache
+C:\Users\SMI\Desktop\VertexOfPolylineGetter\VertexOfPolylineGetter\obj\Debug\VertexOfPolylineGetter.dll
+C:\Users\SMI\Desktop\VertexOfPolylineGetter\VertexOfPolylineGetter\obj\Debug\VertexOfPolylineGetter.pdb
