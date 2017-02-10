@@ -12,7 +12,6 @@ public class Points {
     List<Point> points = new ArrayList<>();
 
     public void setPoints(Point... points) {
-
         for (Point point : points) {
             this.points.add(point);
         }
