@@ -5,11 +5,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Point {
-    private int X;
-    private int Y;
-    private int Z;
+    private double X;
+    private double Y;
+    private double Z;
 
-    public static Point initPoint(int x, int y, int z) {
+    public static Point initPoint(double x, double y, double z) {
         Point rez = new Point();
         rez.setX(x);
         rez.setY(y);
@@ -17,15 +17,23 @@ public class Point {
         return rez;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         X = x;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         Y = y;
     }
 
-    public void setZ(int z) {
+    public void setZ(double z) {
         Z = z;
+    }
+
+    public double getX() {
+        return X;
+    }
+
+    public double getY() {
+        return Y;
     }
 }

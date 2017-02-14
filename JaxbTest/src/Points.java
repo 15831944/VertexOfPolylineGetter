@@ -11,8 +11,7 @@ public class Points {
     @XmlElement(name = "Point")
     List<Point> points = new ArrayList<>();
 
-    public void setPoints(Point... points) {
-
+    public void setPoints(List<Point> points) {
         for (Point point : points) {
             this.points.add(point);
         }
