@@ -1,8 +1,10 @@
+package railRoadElements;
+
 /**
  * Created by SMI on 09.02.2017.
  */
 public class Constants {
-    // Constants for Railtrack
+    // railRoadElements.Constants for Railtrack
     public static final boolean PUBLIC_FLAG = true;
     public static final boolean PRESENTATION_FLAG = true;
     public static final boolean SHOW_LABEL = false;
@@ -16,5 +18,9 @@ public class Constants {
     public static final int LINE_WIDTH = 2;
     public static final int LABEL_X = 10;
     public static final int LABEL_Y = 0;
+
+    // convenient coordinates
+    public static final int FIRST_X = 0;
+    public static final int FIRST_Y = 600;
 
 }

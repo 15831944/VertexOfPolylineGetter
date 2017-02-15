@@ -1,7 +1,10 @@
+package railRoadElements;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @XmlRootElement(
         name = "Shapes"
@@ -15,7 +18,7 @@ public class Shapes {
     @XmlElement(
             name = "RailTrack"
     )
-    private RailTrack railTrack;
+    private List<RailTrack> railTrackList;
 
     public Shapes() {
     }
@@ -24,7 +27,7 @@ public class Shapes {
         this.railyard = railyard;
     }
 
-    public void setRailTrack(RailTrack railTrack) {
-        this.railTrack = railTrack;
+    public void setRailTrackList(List<RailTrack> railTrackList) {
+        this.railTrackList = railTrackList;
     }
 }
