@@ -47,35 +47,17 @@ public class FileParser {
 
     private List<Point> completeListOfPoint(List<Point> pointList) {
         List<Point> newPointList = new ArrayList<>();
-        Point bufferPoint = pointList.get(0);
-        newPointList.add(pointList.get(0));
-        for (int i = 0; i < pointList.size()-1; i++) {
-            Point point1 = pointList.get(i);
-            Point point2 = pointList.get(i+1);
-            List<Point> twoPoints = getTwoAdditionalPoints(point1, point2);
-            newPointList.add(bufferPoint);
-            newPointList.add(twoPoints.get(0));
-            newPointList.add(point2);
-            bufferPoint = twoPoints.get(1);
+        Point first = pointList.get(0);
+        newPointList.add(first);
+        newPointList.add(first);
+        for (int i = 1; i < pointList.size(); i++) {
+            Point pointI = pointList.get(i);
+            newPointList.add(pointI);
+            newPointList.add(pointI);
+            Point pointI_1 = pointList.get(i-1);
+            newPointList.add(pointI_1);
         }
-        newPointList.add(bufferPoint);
         newPointList.add(pointList.get(pointList.size()-1));
         return newPointList;
-    }
-
-    private List<Point> getTwoAdditionalPoints(Point one, Point two) {
-        List<Point> twoAdditionalPoints = new ArrayList<>();
-        double dx = two.getX() - one.getX();
-        double dy = two.getY() - one.getY();
-        double tangens = dy / dx;
-        double fapX = one.getX() + dx/3;
-        double fapY = tangens == 0 ? one.getY() : (fapX - one.getX()) * tangens;
-        Point firstAdditionalPoint = Point.initPoint(fapX, fapY, 0);
-        double sapX = fapX + dx/3;
-        double sapY = tangens == 0 ? one.getY() : (sapX - one.getX()) * tangens;
-        Point secondAdditionalPoint = Point.initPoint(sapX, sapY, 0);
-        twoAdditionalPoints.add(firstAdditionalPoint);
-        twoAdditionalPoints.add(secondAdditionalPoint);
-        return twoAdditionalPoints;
     }
 }
