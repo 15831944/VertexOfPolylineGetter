@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -10,7 +11,12 @@ namespace VertexOfPolylineGetter
 {
     public class Class1
     {
-        private static int counter = 0;
+        private static int counterForTracks = 0;
+        private static int counterForSwitches = 0;
+
+        /// <summary>
+        /// Command get information about polylines(vertexies) and points(coordinates) of ModelSpace
+        /// </summary>
         [CommandMethod("GetPolylineVertex")]
         public static void GetPolylineVertex()
         {
@@ -30,7 +36,7 @@ namespace VertexOfPolylineGetter
                 acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace],
                                                 OpenMode.ForRead) as BlockTableRecord;
 
-                int nCnt = 0;
+                int nCnt = 0; // find objects counter
                 acDoc.Editor.WriteMessage("\n--------------------------------------------------------------------------------------------");
                 acDoc.Editor.WriteMessage("\nHi! I'm command getPolylineVertex.");
                 acDoc.Editor.WriteMessage("\nI'll scan this model space and find all objects.");
@@ -45,23 +51,41 @@ namespace VertexOfPolylineGetter
                 // display the type of object found
                 foreach (ObjectId acObjId in acBlkTblRec)
                 {
-                    acDoc.Editor.WriteMessage("\n" + acObjId.ObjectClass.Name + " - " + acObjId);
+                    acDoc.Editor.WriteMessage("\n" + acObjId.ObjectClass.Name + " - " + acObjId + " - " + acObjId.ObjectClass.DxfName);
 
-                    // work only with PolyLines
-                    if (acObjId.ObjectClass.Name.Equals("AcDbPolyline"))
+                    switch (acObjId.ObjectClass.DxfName)
                     {
-                        DBObject dbObject = acObjId.GetObject(OpenMode.ForRead);
-                        Polyline pln = dbObject as Polyline;
-                        int vn = pln.NumberOfVertices;
-                        StringBuilder stringForWriteInFile = new StringBuilder($"track{++counter}: ");
-                        for (int i = 0; i < vn; i++)
+                        // work with PolyLines
+                        case "LWPOLYLINE":
                         {
-                            // Could also get the 3D point here
-                            Point2d pt = pln.GetPoint2dAt(i);
-                            acDoc.Editor.WriteMessage("\n" + pt.X + " - " + pt.Y);
-                            stringForWriteInFile.Append($"{pt.X:0.00} {pt.Y:0.00} ");
+                            DBObject dbObject = acObjId.GetObject(OpenMode.ForRead);
+                            Polyline pln = dbObject as Polyline;
+                            int vn = pln.NumberOfVertices;
+                            StringBuilder stringForWriteInFile = new StringBuilder($"track{++counterForTracks}: ");
+                            for (int i = 0; i < vn; i++)
+                            {
+                                // Could also get the 3D point here
+                                Point2d pt = pln.GetPoint2dAt(i);
+                                acDoc.Editor.WriteMessage("\n" + pt.X + " - " + pt.Y);
+                                stringForWriteInFile.Append($"{pt.X:0.00} {pt.Y:0.00} ");
+                            }
+                            file.WriteLine(stringForWriteInFile.ToString()); // write information about next polyline
+                            break;
                         }
-                        file.WriteLine(stringForWriteInFile.ToString()); // write information about next polyline
+
+                        // work with dots
+                        case "POINT":
+                        {
+                            DBObject dbObject = acObjId.GetObject(OpenMode.ForRead);
+                            // use reflextion to get point
+                            PropertyInfo positionProperty = dbObject.GetType().GetProperty("Position");
+                            Point3d point3d = (Point3d) positionProperty.GetValue(dbObject);
+                            // write information in file
+                            string stringForWriteInFile = $"switch{++counterForSwitches}: {point3d.X:0.00} {point3d.Y:0.00}";
+                            acDoc.Editor.WriteMessage("\n" + point3d.X + " - " + point3d.Y);
+                            file.WriteLine(stringForWriteInFile);
+                            break;
+                        }
                     }
                     nCnt = nCnt + 1;
                 }
