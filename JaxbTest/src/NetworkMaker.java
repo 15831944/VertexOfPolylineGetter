@@ -9,6 +9,8 @@ public class NetworkMaker {
     private static int numberForTrackName = 0;
     private static int numberForYardId = 0;
     private static int numberForYardName = 0;
+    private static int numberForSwitchId = 0;
+    private static int numberForSwitchName = 0;
 
 
     // parse information from autocad and make shapes for xml file
@@ -19,15 +21,34 @@ public class NetworkMaker {
         Railyard railyard = new Railyard(); // till work with one railYard
         Shapes shapes = new Shapes(); // shapes in railYard
 
-        List<String> tracksInformationList = fileParser.getListOfTracks(); // take information about tracks from file
+        List<String> tracksInformationList = fileParser.getTracks(); // take information about tracks from file
+        List<String> switchesInformationList = fileParser.getSwitches(); // take information about switches from file
 
         List<RailTrack> tracks = makeListOfTracks(tracksInformationList);
-        shapes.setRailTrackList(tracks); // put tracks to shapes in railYard
+        List<RailroadSwitch> switches = makeListOfSwitches(switchesInformationList);
 
-        railyard.initRailyard(makeYardId(), makeYardName(), 0, 0, shapes);
+        shapes.setRailTrackList(tracks); // put tracks to shapes in railYard
+        shapes.setRailroadSwitchList(switches); // put switches to shapes in railYard
+
+        railyard.initRailyard(makeYardId(), makeYardName(), Constants.FIRST_X, Constants.FIRST_Y, shapes);
         mainShapes.setRailyard(railyard);
 
         return mainShapes;
+    }
+
+    private List<RailroadSwitch> makeListOfSwitches(List<String> switchesInformationList) {
+        List<RailroadSwitch> railroadSwitchList = new ArrayList<>();
+        for (String switchInform : switchesInformationList) {
+            String[] xy = switchInform.split(" ");
+            double x = Double.parseDouble(xy[1]);
+            double y = - Double.parseDouble(xy[2]);
+
+            RailroadSwitch railroadSwitch = new RailroadSwitch();
+            railroadSwitch.initRailroadSwitch(makeSwitchId(), makeSwitchName(), Constants.FIRST_X + x, Constants.FIRST_Y + y);
+
+            railroadSwitchList.add(railroadSwitch);
+        }
+        return railroadSwitchList;
     }
 
     private String makeTrackId() {
@@ -50,6 +71,16 @@ public class NetworkMaker {
         return String.format("1486646288%03d", numberForTrackId);
     }
 
+    private String makeSwitchName() {
+        numberForSwitchName++;
+        return String.format("railwaySwitch%d", numberForSwitchName);
+    }
+
+    private String makeSwitchId() {
+        numberForSwitchId++;
+        return String.format("1487248525%03d", numberForSwitchId);
+    }
+
     private List<RailTrack> makeListOfTracks(List<String> tracksInformationList) {
         List<RailTrack> railTrackList = new ArrayList<>();
         for (String trackInform : tracksInformationList) {
@@ -70,7 +101,7 @@ public class NetworkMaker {
         String[] strArray = track.split(" ");
         for (int i = 1; i < strArray.length-1; i = i+2) {
             double x = Double.parseDouble(strArray[i]);
-            double y = - Double.parseDouble(strArray[i+1]);
+            double y = - Double.parseDouble(strArray[i+1]); // mirror view in anyLogic
             Point point = Point.initPoint(x, y, 0);
             pointList.add(point);
         }

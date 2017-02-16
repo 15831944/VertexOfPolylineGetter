@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 /**
- * Created by SMI on 13.02.2017.
+ * Generate AnyLogic view of railroad netWork to add it in (.alp)
  */
 public class ALPGenerator {
     public static void main(String[] args) {

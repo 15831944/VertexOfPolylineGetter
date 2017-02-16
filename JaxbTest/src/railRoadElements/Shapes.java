@@ -19,6 +19,10 @@ public class Shapes {
             name = "RailTrack"
     )
     private List<RailTrack> railTrackList;
+    @XmlElement(
+            name = "RailroadSwitch"
+    )
+    private List<RailroadSwitch> railroadSwitchList;
 
     public Shapes() {
     }
@@ -29,5 +33,9 @@ public class Shapes {
 
     public void setRailTrackList(List<RailTrack> railTrackList) {
         this.railTrackList = railTrackList;
+    }
+
+    public void setRailroadSwitchList(List<RailroadSwitch> railroadSwitchList) {
+        this.railroadSwitchList = railroadSwitchList;
     }
 }
